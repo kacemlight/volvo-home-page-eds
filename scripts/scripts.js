@@ -1,86 +1,84 @@
 /**
- * Global scripts for Volvo home page
- * Handles block loading, decoration, and initialization
+ * Global Scripts for Volvo Home Page EDS
+ * Handles common functionality across all blocks
  */
 
-/**
- * Load and decorate blocks dynamically
- * @param {HTMLElement} block - The block element to decorate
- */
-function loadBlock(block) {
-  const blockName = block.getAttribute('data-block-name');
-  if (blockName) {
-    const blockPath = `/blocks/${blockName}/${blockName}.js`;
-    import(blockPath)
-      .then((module) => {
-        if (module.default) {
-          module.default(block);
+// Utility: Lazy load images
+export function lazyLoadImages() {
+  if ('IntersectionObserver' in window) {
+    const images = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+          imageObserver.unobserve(img);
         }
-      })
-      .catch((error) => {
-        console.error(`Error loading block: ${blockName}`, error);
       });
+    });
+
+    images.forEach((img) => imageObserver.observe(img));
   }
 }
 
-/**
- * Initialize page - load all blocks
- */
-function initPage() {
-  document.querySelectorAll('[data-block-name]').forEach((block) => {
-    loadBlock(block);
-  });
+// Utility: Add smooth scroll behavior
+export function setupSmoothScroll() {
+  document.documentElement.style.scrollBehavior = 'smooth';
 }
 
-/**
- * Initialize on DOMContentLoaded or if document is already loaded
- */
+// Utility: Handle mobile menu toggle
+export function setupMobileMenu() {
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navigation = document.querySelector('nav');
+
+  if (menuToggle && navigation) {
+    menuToggle.addEventListener('click', () => {
+      navigation.classList.toggle('open');
+      menuToggle.setAttribute(
+        'aria-expanded',
+        navigation.classList.contains('open')
+      );
+    });
+  }
+}
+
+// Utility: Track Core Web Vitals
+export function trackCoreWebVitals() {
+  if ('web-vital' in window) {
+    const { getCLS, getFID, getFCP, getLCP, getTTFB } = window['web-vital'];
+
+    getCLS((metric) => {
+      console.log('CLS:', metric.value);
+    });
+
+    getFID((metric) => {
+      console.log('FID:', metric.value);
+    });
+
+    getLCP((metric) => {
+      console.log('LCP:', metric.value);
+    });
+  }
+}
+
+// Initialize on DOM ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initPage);
+  document.addEventListener('DOMContentLoaded', () => {
+    lazyLoadImages();
+    setupSmoothScroll();
+    setupMobileMenu();
+  });
 } else {
-  initPage();
+  lazyLoadImages();
+  setupSmoothScroll();
+  setupMobileMenu();
 }
 
-/**
- * Web Vitals tracking for performance monitoring
- * Logs Core Web Vitals: LCP, CLS, FID
- */
-function trackWebVitals() {
-  try {
-    // Largest Contentful Paint (LCP)
-    if ('PerformanceObserver' in window) {
-      const lcpObserver = new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1];
-        console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
-      });
-      lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-
-      // Cumulative Layout Shift (CLS)
-      const clsObserver = new PerformanceObserver((list) => {
-        let clsValue = 0;
-        for (const entry of list.getEntries()) {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
-          }
-        }
-        console.log('CLS:', clsValue);
-      });
-      clsObserver.observe({ entryTypes: ['layout-shift'] });
-
-      // First Input Delay (FID)
-      const fidObserver = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          console.log('FID:', entry.processingDuration);
-        }
-      });
-      fidObserver.observe({ entryTypes: ['first-input'] });
-    }
-  } catch (error) {
-    console.warn('Web Vitals tracking not supported in this browser');
-  }
-}
-
-trackWebVitals();
-
-export { loadBlock, initPage, trackWebVitals };
+// Export for external use
+window.volvoCars = {
+  lazyLoadImages,
+  setupSmoothScroll,
+  setupMobileMenu,
+  trackCoreWebVitals,
+};

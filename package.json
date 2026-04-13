@@ -1,21 +1,44 @@
 {
   "name": "volvo-home-page-eds",
   "version": "1.0.0",
-  "description": "Volvo home page built with Adobe Edge Delivery Services",
-  "type": "module",
+  "description": "Volvo home page built with Adobe Edge Delivery Services (EDS)",
+  "main": "scripts/scripts.js",
   "scripts": {
-    "start": "wds",
-    "build": "npm run lint && npm run test",
-    "lint": "eslint .",
-    "test": "npm run test:unit",
-    "test:unit": "node --loader=./node_modules/mocha-loader ./test/**/*.test.js",
-    "preview": "wds --open"
+    "dev": "aem up",
+    "build": "aem build",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx",
+    "format": "prettier --write \"**/*.{js,css,md}\""
   },
+  "keywords": [
+    "volvo",
+    "eds",
+    "edge-delivery-services",
+    "aem",
+    "automotive"
+  ],
+  "author": "David (Developer)",
+  "license": "MIT",
   "dependencies": {
-    "@adobe/aem-boilerplate": "^1.0.0"
+    "web-vitals": "^3.0.0"
   },
   "devDependencies": {
-    "@web/dev-server": "^0.1.35",
-    "eslint": "^8.40.0"
+    "@aem-sdks/aem-sdk": "^1.0.0",
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "babel-loader": "^9.1.0",
+    "eslint": "^8.44.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kacemlight/volvo-home-page-eds.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
