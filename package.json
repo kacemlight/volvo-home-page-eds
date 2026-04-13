@@ -1,0 +1,21 @@
+{
+  "name": "volvo-home-page-eds",
+  "version": "1.0.0",
+  "description": "Volvo home page built with Adobe Edge Delivery Services",
+  "type": "module",
+  "scripts": {
+    "start": "wds",
+    "build": "npm run lint && npm run test",
+    "lint": "eslint .",
+    "test": "npm run test:unit",
+    "test:unit": "node --loader=./node_modules/mocha-loader ./test/**/*.test.js",
+    "preview": "wds --open"
+  },
+  "dependencies": {
+    "@adobe/aem-boilerplate": "^1.0.0"
+  },
+  "devDependencies": {
+    "@web/dev-server": "^0.1.35",
+    "eslint": "^8.40.0"
+  }
+}
