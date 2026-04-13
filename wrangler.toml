@@ -1,0 +1,19 @@
+name = "volvo-home-page-eds"
+main = "src/index.js"
+compatibility_date = "2026-04-01"
+
+[env.production]
+route = "volvocars.com/*"
+zone_id = "YOUR_ZONE_ID"
+
+[env.preview]
+route = "main--volvo-home-page-eds--kacemlight.hlx.page/*"
+zone_id = "YOUR_ZONE_ID"
+
+[env.live]
+route = "main--volvo-home-page-eds--kacemlight.hlx.live/*"
+zone_id = "YOUR_ZONE_ID"
+
+[[triggers.crons]]
+cron = "0 */6 * * *"
+env = "production"
