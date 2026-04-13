@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "strains": [
+    {
+      "name": "default",
+      "code": "/",
+      "content": "/",
+      "static": "/static",
+      "markup": {
+        "baseURL": "/"
+      }
+    }
+  ]
+}
